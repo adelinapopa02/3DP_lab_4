@@ -20,6 +20,18 @@ Assignment authored by [Daniel Fusaro](https://bender97.github.io/) (3D Data Pro
 
 ---
 
+## Project overview
+
+| File | Role |
+|---|---|
+| `3DP2026_Lab_4_MinkUNet.ipynb` | Main notebook: voxelization/collation, `SparseGatedResBlock`, MinkUNet architecture, training and evaluation. |
+| `Lab_4_MinkUNet_plots.ipynb` | Reads the training logs and produces the plots used in the report. |
+| `Lab4_results_005t.txt`, `Lab4_results_010t.txt`, `Lab4_results_020t.txt` | Training/eval logs for the voxel-size sensitivity study (0.05 m / 0.10 m / 0.20 m, `use_remission=True`, 5 epochs) — Task 6.1. |
+| `Lab4_results_010f.txt` | Training/eval log for the geometry-only ablation (`voxel_size=0.10`, `use_remission=False`) — Task 6.2, compared against `Lab4_results_010t.txt`. |
+| `Lab4_Report.pdf` | Report: voxel-size sensitivity study, remission-vs-geometry-only ablation, class-wise IoU analysis and discussion. |
+
+---
+
 ## Run
 
 Open in Google Colab:
