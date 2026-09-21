@@ -1,0 +1,144 @@
+model, history = run_training_experiment(voxel_size=0.05, use_remission=True, augment=True, num_epochs=5, batch_size=8)
+
+======================================================================
+STARTING TRAINING EXPERIMENT
+======================================================================
+Voxel Size     : 0.05
+Use Remission  : True
+Data Augment   : True
+Epochs         : 5
+Batch Size     : 8
+======================================================================
+
+Loading datasets...
+Dataset initialized. Loaded 488 point clouds from sequences [0].
+Dataset initialized. Loaded 100 point clouds from sequences [1].
+Train samples : 488
+Val samples   : 100
+
+Creating dataloaders...
+
+Creating model...
+MinkUNet
+Device: cuda
+/usr/local/lib/python3.11/dist-packages/torch/utils/data/dataloader.py:624: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+
+Optimizer: AdamW
+Learning Rate: 1e-3
+Weight Decay : 1e-4
+
+======================================================================
+TRAINING STARTED
+======================================================================
+
+Epoch [1/5]
+----------------------------------------------------------------------
+/usr/local/lib/python3.11/dist-packages/torch/utils/data/dataloader.py:624: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+Training:   0% 0/61 [00:11<?, ?it/s]---------------------------------------------------------------------------
+OutOfMemoryError                          Traceback (most recent call last)
+/tmp/ipython-input-13-3306316855.py in <cell line: 0>()
+----> 1 model, history = run_training_experiment(voxel_size=0.05, use_remission=True, augment=True, num_epochs=5, batch_size=8)
+
+4 frames/tmp/ipython-input-12-2989831118.py in run_training_experiment(voxel_size, use_remission, augment, num_epochs, batch_size)
+    353         # ----------------------------------------------------
+    354 
+--> 355         train_loss = train_one_epoch(
+    356             model,
+    357             train_loader,
+
+/tmp/ipython-input-12-2989831118.py in train_one_epoch(model, dataloader, optimizer, criterion, device)
+     79         optimizer.zero_grad()
+     80 
+---> 81         logits = model(x)
+     82 
+     83         loss = criterion(logits, voxel_labels)
+
+/usr/local/lib/python3.11/dist-packages/torch/nn/modules/module.py in _wrapped_call_impl(self, *args, **kwargs)
+   1737             return self._compiled_call_impl(*args, **kwargs)  # type: ignore[misc]
+   1738         else:
+-> 1739             return self._call_impl(*args, **kwargs)
+   1740 
+   1741     # torchrec tests the code consistency with the following code
+
+/usr/local/lib/python3.11/dist-packages/torch/nn/modules/module.py in _call_impl(self, *args, **kwargs)
+   1748                 or _global_backward_pre_hooks or _global_backward_hooks
+   1749                 or _global_forward_hooks or _global_forward_pre_hooks):
+-> 1750             return forward_call(*args, **kwargs)
+   1751 
+   1752         result = None
+
+/tmp/ipython-input-10-3559008156.py in forward(self, x)
+     98 
+     99         x_dec1 = self.dec1_up(x_dec2)
+--> 100         cat_feat1 = torch.cat([x_dec1.features, x_in.features], dim=-1)
+    101         x_dec1 = x_dec1.replace_feature(cat_feat1)
+    102         x_dec1 = self.dec1_fusion(x_dec1)
+
+OutOfMemoryError: CUDA out of memory. Tried to allocate 122.00 MiB. GPU 0 has a total capacity of 14.56 GiB of which 25.81 MiB is free. Including non-PyTorch memory, this process has 14.54 GiB memory in use. Of the allocated memory 14.30 GiB is allocated by PyTorch, and 116.89 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+test_loss, test_miou, test_class_ious = run_test("/content/best_model.pth")
+
+Dataset initialized. Loaded 500 point clouds from sequences [2].
+Test samples  : 500
+
+Creating dataloader...
+
+Creating model...
+MinkUNet
+Device: cuda
+---------------------------------------------------------------------------
+FileNotFoundError                         Traceback (most recent call last)
+/tmp/ipython-input-14-1274918423.py in <cell line: 0>()
+----> 1 test_loss, test_miou, test_class_ious = run_test("/content/best_model.pth")
+
+3 frames/tmp/ipython-input-12-2989831118.py in run_test(checkpoint_path, voxel_size, use_remission, batch_size)
+    493     # ========================================================
+    494 
+--> 495     status = model.load_state_dict(torch.load(checkpoint_path), strict=True)
+    496     print(status)
+    497 
+
+/usr/local/lib/python3.11/dist-packages/torch/serialization.py in load(f, map_location, pickle_module, weights_only, mmap, **pickle_load_args)
+   1423         pickle_load_args["encoding"] = "utf-8"
+   1424 
+-> 1425     with _open_file_like(f, "rb") as opened_file:
+   1426         if _is_zipfile(opened_file):
+   1427             # The zipfile reader is going to advance the current file position.
+
+/usr/local/lib/python3.11/dist-packages/torch/serialization.py in _open_file_like(name_or_buffer, mode)
+    749 def _open_file_like(name_or_buffer, mode):
+    750     if _is_path(name_or_buffer):
+--> 751         return _open_file(name_or_buffer, mode)
+    752     else:
+    753         if "w" in mode:
+
+/usr/local/lib/python3.11/dist-packages/torch/serialization.py in __init__(self, name, mode)
+    730 class _open_file(_opener):
+    731     def __init__(self, name, mode):
+--> 732         super().__init__(open(name, mode))
+    733 
+    734     def __exit__(self, *args):
+
+FileNotFoundError: [Errno 2] No such file or directory: '/content/best_model.pth'

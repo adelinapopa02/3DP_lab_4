@@ -1,0 +1,166 @@
+model, history = run_training_experiment(voxel_size=0.10, use_remission=False, augment=True, num_epochs=5, batch_size=8)
+
+======================================================================
+STARTING TRAINING EXPERIMENT
+======================================================================
+Voxel Size     : 0.1
+Use Remission  : False
+Data Augment   : True
+Epochs         : 5
+Batch Size     : 8
+======================================================================
+
+Loading datasets...
+Dataset initialized. Loaded 488 point clouds from sequences [0].
+Dataset initialized. Loaded 100 point clouds from sequences [1].
+Train samples : 488
+Val samples   : 100
+
+Creating dataloaders...
+
+Creating model...
+MinkUNet
+Device: cuda
+/usr/local/lib/python3.11/dist-packages/torch/utils/data/dataloader.py:624: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+
+Optimizer: AdamW
+Learning Rate: 1e-3
+Weight Decay : 1e-4
+
+======================================================================
+TRAINING STARTED
+======================================================================
+
+Epoch [1/5]
+----------------------------------------------------------------------
+/usr/local/lib/python3.11/dist-packages/torch/utils/data/dataloader.py:624: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+Train Loss: 1.5413 | Time: 622.53s
+Validation Loss: 1.2918 | mIoU: 17.87% | Time: 47.38s
+Best model updated!
+
+Epoch Summary
+----------------------------------------------------------------------
+Train Loss : 1.5413
+Val Loss   : 1.2918
+Val mIoU   : 17.87%
+Epoch Time : 669.93s
+----------------------------------------------------------------------
+
+Epoch [2/5]
+----------------------------------------------------------------------
+Train Loss: 0.7446 | Time: 232.71s
+Validation Loss: 0.8983 | mIoU: 26.02% | Time: 36.89s
+Best model updated!
+
+Epoch Summary
+----------------------------------------------------------------------
+Train Loss : 0.7446
+Val Loss   : 0.8983
+Val mIoU   : 26.02%
+Epoch Time : 269.61s
+----------------------------------------------------------------------
+
+Epoch [3/5]
+----------------------------------------------------------------------
+Train Loss: 0.5140 | Time: 233.17s
+Validation Loss: 0.7056 | mIoU: 30.02% | Time: 36.55s
+Best model updated!
+
+Epoch Summary
+----------------------------------------------------------------------
+Train Loss : 0.5140
+Val Loss   : 0.7056
+Val mIoU   : 30.02%
+Epoch Time : 269.74s
+----------------------------------------------------------------------
+
+Epoch [4/5]
+----------------------------------------------------------------------
+Train Loss: 0.4161 | Time: 234.23s
+Validation Loss: 0.6319 | mIoU: 36.20% | Time: 36.63s
+Best model updated!
+
+Epoch Summary
+----------------------------------------------------------------------
+Train Loss : 0.4161
+Val Loss   : 0.6319
+Val mIoU   : 36.20%
+Epoch Time : 270.87s
+----------------------------------------------------------------------
+
+Epoch [5/5]
+----------------------------------------------------------------------
+Train Loss: 0.3480 | Time: 232.65s
+Validation Loss: 0.5914 | mIoU: 39.10% | Time: 34.82s
+Best model updated!
+
+Epoch Summary
+----------------------------------------------------------------------
+Train Loss : 0.3480
+Val Loss   : 0.5914
+Val mIoU   : 39.10%
+Epoch Time : 267.48s
+----------------------------------------------------------------------
+
+======================================================================
+TRAINING FINISHED
+======================================================================
+Best Validation mIoU: 39.10%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+test_loss, test_miou, test_class_ious = run_test("/content/best_model.pth")
+
+Dataset initialized. Loaded 500 point clouds from sequences [2].
+Test samples  : 500
+
+Creating dataloader...
+
+Creating model...
+MinkUNet
+Device: cuda
+<All keys matched successfully>
+Test Loss: 1.1117 | mIoU: 21.36% | Time: 156.60s
+\Test Summary
+----------------------------------------------------------------------
+Test Loss  : 1.1117
+Test mIoU  : 21.36%
+Epoch Time : 158.87s
+
+Per-Class IoU
+ 0 | person          | IoU = 2.52%
+ 1 | rider           | IoU = 0.00%
+ 2 | car             | IoU = 31.65%
+ 3 | trunk           | IoU = 0.00%
+ 4 | plants          | IoU = 59.89%
+ 5 | traffic_sign    | IoU = 0.36%
+ 6 | pole            | IoU = 0.00%
+ 7 | trashcan        | IoU = 0.00%
+ 8 | building        | IoU = 57.10%
+ 9 | cone_stone      | IoU = 0.00%
+10 | fence           | IoU = 17.89%
+11 | bike            | IoU = 42.26%
+12 | ground          | IoU = 66.02%
+----------------------------------------------------------------------
+
